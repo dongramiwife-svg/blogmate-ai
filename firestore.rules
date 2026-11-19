@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /subscriptions/{userId} {
+      allow read, create, update, delete: if request.auth != null
+        && request.auth.uid == userId
+        && (request.method == 'delete' || (request.resource.data.keys().hasOnly(['token','updatedAt'])
+          && request.resource.data.token is string
+          && request.resource.data.token.size() <= 4096
+          && request.resource.data.updatedAt is string));
+    }
+  }
+}
