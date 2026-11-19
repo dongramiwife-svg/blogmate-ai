@@ -33,10 +33,6 @@ def fetch(blog_id):
     return items
 
 def main():
-    now=datetime.now(KST)
-    if not allowed(now):
-        print('Outside KST monitoring window; skip')
-        return
     ids=json.loads(FEEDS.read_text(encoding='utf-8'))
     state=json.loads(STATE.read_text(encoding='utf-8')) if STATE.exists() else {'initialized':{},'seen':[]}
     seen=set(state.get('seen',[]))
